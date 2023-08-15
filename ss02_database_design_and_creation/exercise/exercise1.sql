@@ -2,7 +2,7 @@ create database quan_ly_vat_tu;
 use quan_ly_vat_tu;
 
 create table vat_tu(
-	ma_vt varchar(20) not null primary key,
+	ma_vt varchar(20) not null primary key auto_increment,
     ten_vt varchar(50) not null
 );
 
