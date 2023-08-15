@@ -6,7 +6,7 @@ create table classroom(
 	class_id int not null primary key auto_increment,
     class_name varchar(60) not null,
     start_date datetime not null,
-    `status` bit
+    `status` bit(1)
 );
 
 create table students(
@@ -85,9 +85,11 @@ where
 	credit between 3 and 5;
     
 -- Thay đổi mã lớp(ClassID) của sinh viên có tên ‘Hung’ là 2
+set sql_safe_updates = 0;
 update students
 set students.class_id = 2
 where student_name = 'Hung';
+set sql_safe_updates = 1;
 
 -- Hiển thị các thông tin: StudentName, SubName, Mark. Dữ liệu sắp xếp theo 
 -- điểm thi (mark) giảm dần. nếu trùng sắp theo tên tăng dần.
@@ -95,7 +97,4 @@ select student_name, subject_name, mark
 from students
 	join marks on students.student_id = marks.student_id
     join subjects on marks.subject_id = subjects.subject_id
-order by marks.mark, students.student_name;
-    
-    
-
+order by marks.mark desc, students.student_name;
