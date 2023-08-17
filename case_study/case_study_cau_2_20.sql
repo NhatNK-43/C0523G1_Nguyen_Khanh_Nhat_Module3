@@ -59,11 +59,11 @@ select
 	khach_hang.ma_khach_hang, 
 	ho_ten, 
 	ten_loai_khach, 
-    ifnull(hop_dong.ma_hop_dong,''), 
-    ifnull(ten_dich_vu,''), 
-	ifnull(ngay_lam_hop_dong,''), 
-    ifnull(ngay_ket_thuc,''), 
-	sum(ifnull(chi_phi_thue,0) * ifnull(so_luong*gia,0)) as tong_tien
+    ifnull(hop_dong.ma_hop_dong,'') as ma_hop_dong, 
+    ifnull(ten_dich_vu,'') as ten_dich_vu, 
+	ifnull(ngay_lam_hop_dong,'') as ngay_lam_hop_dong, 
+    ifnull(ngay_ket_thuc,'') as ngay_ket_thuc, 
+	sum(ifnull(chi_phi_thue,0) + ifnull(so_luong*gia,0)) as tong_tien
     
 from khach_hang
 	left join loai_khach on khach_hang.ma_loai_khach = loai_khach.ma_loai_khach
@@ -130,7 +130,7 @@ group by
 trùng nhau. Học viên sử dụng theo 3 cách khác nhau để thực hiện yêu cầu trên.*/
 
 -- Cách 1:
-select distinct ho_ten
+select distinct ho_ten, ngay_sinh   -- Lọc các bản ghi không trùng lặp trong bảng
 from khach_hang;
     
 -- Cách 2:
@@ -288,45 +288,125 @@ having
 
 -- 16.	Xóa những Nhân viên chưa từng lập được hợp đồng nào từ năm 2019 đến năm 2021.
 
-create view view_nhan_vien as
-select ma_nhan_vien, ho_ten
-from nhan_vien;
+-- create view view_nhan_vien as
+-- select ma_nhan_vien, ho_ten
+-- from nhan_vien;
+--             
+-- delete
+-- from 
+-- 	view_nhan_vien
+-- where ma_nhan_vien not in (
+-- 	select
+-- 		ma_nhan_vien
+-- 	from 
+-- 		hop_dong
+--     where 
+-- 		year(ngay_lam_hop_dong) between 2019 and 2021);
+        
+-- delete
+-- from nhan_vien nv
+-- where ma_nhan_vien not in (
+-- 	select 
+-- 		nv.ma_nhan_vien
+-- 	from 
+-- 		hop_dong
+-- 	where
+-- 		year(ngay_lam_hop_dong) between 2019 and 2021);
 
-select 
-	ma_nhan_vien, 
-	ho_ten 
-from 
-	view_nhan_vien
+alter table nhan_vien
+add column trang_thai bit default 1;
+
+set sql_safe_updates = 0;
+update nhan_vien
+set trang_thai = 0
 where ma_nhan_vien not in (
 	select 
-		view_nhan_vien.ma_nhan_vien
+		ma_nhan_vien
 	from 
-		view_nhan_vien
-		join hop_dong on view_nhan_vien.ma_nhan_vien = hop_dong.ma_nhan_vien
-			and year(ngay_lam_hop_dong) between 2019 and 2021
-	group by 
-		view_nhan_vien.ma_nhan_vien);
+		hop_dong
+	where
+		year(ngay_lam_hop_dong) between 2019 and 2021);
+set sql_safe_updates = 1;
+
+/*17.	Cập nhật thông tin những khách hàng có ten_loai_khach từ Platinum lên Diamond, 
+chỉ cập nhật những khách hàng đã từng đặt phòng với Tổng Tiền thanh toán trong năm 2021 
+là lớn hơn 10.000.000 VNĐ.*/
+
+update khach_hang
+set ma_loai_khach = 1
+where 
+	ma_khach_hang in (select ma_khach_hang from danh_sach_cap_nhat)
+;
+
+create view danh_sach_cap_nhat as
+select
+	khach_hang.ma_khach_hang
+from
+	khach_hang
+    join hop_dong on khach_hang.ma_khach_hang = hop_dong.ma_khach_hang
+		and ma_loai_khach = 2
+		and year(ngay_lam_hop_dong) = 2021
+    join dich_vu on hop_dong.ma_dich_vu = dich_vu.ma_dich_vu
+    join hop_dong_chi_tiet on hop_dong.ma_hop_dong = hop_dong_chi_tiet.ma_hop_dong
+    left join dich_vu_di_kem on hop_dong_chi_tiet.ma_dich_vu_di_kem = dich_vu_di_kem.ma_dich_vu_di_kem
+group by 
+	khach_hang.ma_khach_hang
+having
+	sum(ifnull(chi_phi_thue, 0) + ifnull(so_luong * gia, 0)) > 10000000;
     
-set sql_mode = 1;
-delete from nhan_vien
-where ma_nhan_vien not in (
-select 
-	nhan_vien.ma_nhan_vien
+
+/* 18.	Xóa những khách hàng có hợp đồng trước năm 2021 (chú ý ràng buộc giữa các bảng).*/
+
+-- set foreign_key_checks = 1;
+
+alter table khach_hang
+add column trang_thai bit default 1;
+
+set sql_safe_updates = 0;
+update khach_hang
+set trang_thai = 0
+where
+	ma_khach_hang not in (
+							select ma_khach_hang
+                            from hop_dong
+                            where year(ngay_lam_hop_dong) >= 2021);
+set sql_safe_updates = 1;
+
+/* 19.	Cập nhật giá cho các dịch vụ đi kèm được sử dụng trên 10 lần trong năm 2020 lên gấp đôi.*/
+
+set sql_safe_updates = 0;
+update dich_vu_di_kem
+set gia = gia * 2
+where
+	ma_dich_vu_di_kem in (
+					select ma_dich_vu_di_kem
+                    from hop_dong_chi_tiet
+						join hop_dong on hop_dong_chi_tiet.ma_hop_dong = hop_dong.ma_hop_dong
+                        and year(ngay_lam_hop_dong) = 2020
+                    group by ma_dich_vu_di_kem
+                    having sum(so_luong) > 10);
+set sql_safe_updates = 1;
+
+/* 20.	Hiển thị thông tin của tất cả các nhân viên và khách hàng có trong hệ thống, thông 
+tin hiển thị bao gồm id (ma_nhan_vien, ma_khach_hang), ho_ten, email, so_dien_thoai, 
+ngay_sinh, dia_chi.*/
+
+select
+	ma_nhan_vien as id,
+    ho_ten,
+    email,
+    so_dien_thoai,
+    ngay_sinh,
+    dia_chi
 from 
 	nhan_vien
-    join hop_dong on nhan_vien.ma_nhan_vien = hop_dong.ma_nhan_vien
-		and year(ngay_lam_hop_dong) between 2019 and 2021
-group by 
-	nhan_vien.ma_nhan_vien);
-
--- 17.	Cập nhật thông tin những khách hàng có ten_loai_khach từ Platinum lên Diamond, 
--- chỉ cập nhật những khách hàng đã từng đặt phòng với Tổng Tiền thanh toán trong năm 2021 
--- là lớn hơn 10.000.000 VNĐ.
-
--- 18.	Xóa những khách hàng có hợp đồng trước năm 2021 (chú ý ràng buộc giữa các bảng).
-
--- 19.	Cập nhật giá cho các dịch vụ đi kèm được sử dụng trên 10 lần trong năm 2020 lên gấp đôi.
-
--- 20.	Hiển thị thông tin của tất cả các nhân viên và khách hàng có trong hệ thống, thông 
--- tin hiển thị bao gồm id (ma_nhan_vien, ma_khach_hang), ho_ten, email, so_dien_thoai, 
--- ngay_sinh, dia_chi.
+union
+select
+	ma_khach_hang,
+    ho_ten,
+    email,
+    so_dien_thoai,
+    ngay_sinh,
+    dia_chi
+from 
+	khach_hang;
