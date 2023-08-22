@@ -1,0 +1,142 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+}
+body{
+    font-family: Arial, sans-serif;
+}
+#header{
+    height: 50px;
+    background: #404040;
+}
+
+#header-logo{
+    width: 10%;
+    float: left;
+    color: gray;
+    line-height: 50px;
+    text-align: center;
+}
+
+#header-link{
+    width: 40%;
+    float: left;
+}
+
+#header-login{
+    height: 50px;
+    width: 100%;
+    display: block;
+    text-align: right;
+    padding-right: 15px;
+    line-height: 50px;
+}
+
+#header-login a{
+    color: gray;
+    text-decoration: none;
+    text-align: right;
+}
+
+#header-link ul{
+    padding: 0;
+    margin: 0;
+}
+
+#header-link li{
+    position: relative;
+    float: left;
+    list-style: none;
+    width: 25%;
+    margin: 0;
+    padding: 0;
+}
+
+#header-link li a{
+    display: block;
+    color: gray;
+    background: #404040;
+    height: 50px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 50px;
+}
+
+#header-link ul ul li{
+    width: 150px;
+}
+
+#header-link ul ul li a{
+    text-align: left;
+    padding-left: 10px;
+}
+
+#header-link li a:hover{
+    background: black;
+    color: white;
+}
+
+#header-link ul ul{
+    position: absolute;
+    top: 50px;
+    visibility: hidden;
+}
+
+#header-link ul li:hover ul{
+    visibility: visible;
+}
+
+#main{
+    height: 500px;
+}
+#left{
+    height: 500px;
+    width: 15%;
+    float: left;
+    background: gainsboro;
+}
+
+#content{
+    height: 500px;
+    width: 70%;
+    float: left;
+}
+#right{
+    height: 500px;
+    width: 15%;
+    float: left;
+    background: gainsboro;
+}
+
+#footer{
+    clear: both;
+    height: 50px;
+    background: #404040;
+    text-align: center;
+    color: white;
+    line-height: 50px;
+}
+span{
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+}
+span a{
+    color: dodgerblue;
+    text-decoration: none;
+}
+h1, h3, hr, p {
+    margin: 15px;
+}
+
+#footer p{
+    margin: 0;
+}
+
+ button{
+     width: 70%;
+     height: 70px;
+     margin: 15%;
+     border: 1px darkgray;
+     border-radius: 5%;
+ }

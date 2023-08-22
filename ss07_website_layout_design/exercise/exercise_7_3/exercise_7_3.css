@@ -1,136 +1,137 @@
-*{
+* {
     box-sizing: border-box;
     margin: 0;
+    padding: 0;
 }
-body{
+
+[class*="col-"] {
+    float: left;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+html {
     font-family: Arial, sans-serif;
 }
-#header{
+
+.header, .footer {
     height: 50px;
     background: #404040;
-}
-
-#header-logo{
-    width: 10%;
-    float: left;
     color: gray;
     line-height: 50px;
+}
+
+.footer{
+    clear: both;
+    text-align: center;
+    color: white;
+}
+
+.menu ul{
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    background:#404040;
+    color: gray;
+    width: 100%;
     text-align: center;
 }
 
-#header-link{
-    width: 40%;
-    float: left;
-}
-
-#header-login{
-    height: 50px;
-    width: 100%;
-    display: block;
-    text-align: right;
-    padding-right: 15px;
-    line-height: 50px;
-}
-
-#header-login a{
-    color: gray;
-    text-decoration: none;
-    text-align: right;
-}
-
-#header-link ul{
-    padding: 0;
-    margin: 0;
-}
-
-#header-link li{
-    position: relative;
-    float: left;
-    list-style: none;
-    width: 25%;
-    margin: 0;
-    padding: 0;
-}
-
-#header-link li a{
-    display: block;
-    color: gray;
-    background: #404040;
-    height: 50px;
-    text-decoration: none;
-    line-height: 50px;
-}
-
-#header-link ul ul li{
-    width: 150px;
-}
-
-#header-link ul ul li a{
-    text-align: left;
-    padding-left: 10px;
-}
-
-#header-link li a:hover{
+.menu li:hover {
     background: black;
     color: white;
+    cursor: pointer;
 }
 
-#header-link ul ul{
-    position: absolute;
-    top: 50px;
-    visibility: hidden;
+.logo{
+    padding-left: 15px;
 }
 
-#header-link ul li:hover ul{
-    visibility: visible;
+.login{
+    text-align: right;
+    padding-right: 15px;
 }
 
-#main{
-    height: 500px;
-}
-#left{
-    height: 500px;
-    width: 15%;
-    float: left;
-    background: gainsboro;
-}
-
-#content{
-    height: 500px;
-    width: 70%;
-    float: left;
-}
-#right{
-    height: 500px;
-    width: 15%;
-    float: left;
-    background: gainsboro;
-}
-
-#footer{
-    clear: both;
-    height: 50px;
-    background: #404040;
-    text-align: center;
-    color: white;
-    line-height: 50px;
-}
-span{
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-}
-span a{
-    color: dodgerblue;
+.login a{
+    color: gray;
     text-decoration: none;
 }
-h1, h3, hr, p {
-    margin: 15px;
+
+.login a:hover{
+    color: white;
 }
 
- button{
-     width: 100px;
-     height: 50px;
-     margin: auto;
-     border: 1px solid darkgray;
- }
+.body{
+
+    background: gainsboro;
+    padding: 0;
+    margin: 0;
+}
+.content{
+    background: white;
+}
+
+.content h2, h3, p, hr{
+    margin: 2%;
+}
+
+.left, .right{
+    text-align: center;
+}
+
+.left a{
+    display: block;
+    color: dodgerblue;
+    text-decoration: none;
+    padding: 5%;
+}
+
+.left a:hover{
+    color: red;
+}
+
+button{
+    min-height: 80px;
+    width: 80%;
+    margin: 10%;
+    border-radius: 5%;
+    border: 1px solid lightgray;
+}
+
+@media only screen and (min-width: 400px) {
+    .col-m-1 {width: 8.33%;}
+    .col-m-2 {width: 16.66%;}
+    .col-m-3 {width: 25%;}
+    .col-m-4 {width: 33.33%;}
+    .col-m-5 {width: 41.66%;}
+    .col-m-6 {width: 50%;}
+    .col-m-7 {width: 58.33%;}
+    .col-m-8 {width: 66.66%;}
+    .col-m-9 {width: 75%;}
+    .col-m-10 {width: 83.33%;}
+    .col-m-11 {width: 91.66%;}
+    .col-m-12 {width: 100%;}
+}
+
+@media only screen and (min-width: 768px) {
+    .col-1 {width: 8.33%;}
+    .col-2 {width: 16.66%;}
+    .col-3 {width: 25%;}
+    .col-4 {width: 33.33%;}
+    .col-5 {width: 41.66%;}
+    .col-6 {width: 50%;}
+    .col-7 {width: 58.33%;}
+    .col-8 {width: 66.66%;}
+    .col-9 {width: 75%;}
+    .col-10 {width: 83.33%;}
+    .col-11 {width: 91.66%;}
+    .col-12 {width: 100%;}
+}
