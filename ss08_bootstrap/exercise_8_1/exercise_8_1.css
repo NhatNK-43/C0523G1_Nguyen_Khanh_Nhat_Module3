@@ -1,0 +1,18 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    font-family: "Times New Roman";
+    margin: 1rem;
+}
+h2,h4{
+    font-weight: bold;
+    margin: 20px 0;
+}
+.card-body {
+    text-align: center;
+}
+.note p{
+    padding-top: 10px;
+    text-align: justify;
+}

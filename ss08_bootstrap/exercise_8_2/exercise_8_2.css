@@ -1,0 +1,31 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    font-family: "Segoe UI",SegoeUI,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 1rem;
+}
+
+#header,#header .container-fluid, #header .navbar-nav{
+    height: 50px;
+    font-size: 14px;
+}
+
+#header .container-fluid a{
+    line-height: 34px;
+}
+
+#header .logo{
+    height: 50px;
+    line-height: 50px;
+}
+
+#header .collapse{
+    height: 50px;
+}
+
+/*#header .shop-deal{*/
+/*    font-size: 14px;*/
+/*    !*line-height: 60px;*!*/
+/*}*/
