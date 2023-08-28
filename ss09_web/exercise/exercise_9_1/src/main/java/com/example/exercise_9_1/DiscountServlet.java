@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-@WebServlet(name = "discountServlet", value = "/discount-servlet")
+@WebServlet(name = "discountServlet", value = "/discount")
 public class DiscountServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -16,7 +16,7 @@ public class DiscountServlet extends HttpServlet {
         Double discountPrice = price - discountAmount;
         request.setAttribute("discountAmount",discountAmount);
         request.setAttribute("discountPrice",discountPrice);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/display-discount.jsp");
         requestDispatcher.forward(request,response);
     }
 }
