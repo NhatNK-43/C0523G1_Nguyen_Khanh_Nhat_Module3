@@ -12,6 +12,10 @@ body{
     font-size: 14px;
 }
 
+#header .container-fluid{
+    margin-left: 100px;
+}
+
 #header .container-fluid a{
     line-height: 34px;
 }
@@ -25,7 +29,54 @@ body{
     height: 50px;
 }
 
-/*#header .shop-deal{*/
-/*    font-size: 14px;*/
-/*    !*line-height: 60px;*!*/
+#header .btn-shop-deals{
+    padding: 5px;
+    background: #0067b8;
+    color: white;
+    text-decoration: none;
+    border-radius: 2px;
+}
+/*#main .container{*/
+/*    margin: 0;*/
+/*    padding: 0;*/
 /*}*/
+#main .left-1{
+    padding-left: 100px;
+    padding-right: 0;
+}
+#main .right-1{
+    margin: 0;
+    padding: 0;
+}
+@media only screen and (min-width: 768px) {
+    #main .left-1{
+        position: initial;
+    }
+}
+#main .content-2{
+    margin-top: 40px;
+    margin-left: 100px;
+}
+
+#main .content-1 li a{
+    font-size: 20px;
+    color: #0066bb;
+    padding-left: 0;
+}
+#main .content-2 li a{
+    color: #0066bb;
+}
+#main #explore-all{
+    margin-top: 40px;
+    margin-left: 100px;
+}
+
+#main .content-3 .left-3-image{
+    border: gray;
+    border-radius: 5px;
+    padding: 20px 20px 20px 100px;
+}
+
+#main .content-3 .card{
+    margin: 20px;
+}
