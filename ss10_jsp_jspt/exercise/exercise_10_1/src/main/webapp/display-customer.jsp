@@ -19,10 +19,10 @@
   <tbody>
     <c:forEach var="customer" items="${customerList}">
       <tr>
-        <td><c:out value="$customer.name"/></td>
-        <td><c:out value="$customer.dateOfBirth"/></td>
-        <td><c:out value="$customer.address"/></td>
-        <td><img src="<c:out value='$customer.image'/>" alt="..."></td>
+        <td><c:out value="${customer.name}"/></td>
+        <td><c:out value="${customer.dateOfBirth}"/></td>
+        <td><c:out value="${customer.address}"/></td>
+        <td><img src="<c:out value='${customer.image}'/>" alt="..."></td>
       </tr>
     </c:forEach>
   </tbody>

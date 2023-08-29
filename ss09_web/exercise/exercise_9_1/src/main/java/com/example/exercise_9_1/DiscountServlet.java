@@ -12,8 +12,11 @@ public class DiscountServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Double price = Double.parseDouble(request.getParameter("price"));
         Double discountPercent = Double.parseDouble(request.getParameter("discountPercent"));
-        Double discountAmount = price * discountPercent * 0.01;
-        Double discountPrice = price - discountAmount;
+
+        DiscountService discountService = new DiscountService();
+        Double discountAmount = discountService.discountAmount(price,discountPercent);
+        Double discountPrice = discountService.discountPrice(price,discountPercent);
+
         request.setAttribute("discountAmount",discountAmount);
         request.setAttribute("discountPrice",discountPrice);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/display-discount.jsp");
