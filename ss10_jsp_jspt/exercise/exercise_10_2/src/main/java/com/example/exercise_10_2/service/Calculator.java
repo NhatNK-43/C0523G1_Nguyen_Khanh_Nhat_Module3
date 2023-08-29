@@ -1,11 +1,26 @@
-package com.example.exercise_10_2;
+package com.example.exercise_10_2.service;
 
 public class Calculator {
-    public Exception calculator(Double secondNumber, String operator){
-        Exception exception = null;
+    public String calculator(Double firstNumber,Double secondNumber, String operator){
+        String result = "";
         if(operator.equals("Division") && secondNumber==0){
-            exception =  new ArithmeticException();
+            result = "Error division by 0!";
+        }else {
+            switch (operator){
+                case "Addition":
+                    result= firstNumber + " + " + secondNumber +" = "+ (firstNumber+secondNumber);
+                    break;
+                case "Subtraction":
+                    result= firstNumber + " - " + secondNumber +" = "+ (firstNumber-secondNumber);
+                    break;
+                case "Multiplication":
+                    result= firstNumber + " * " + secondNumber +" = "+ (firstNumber*secondNumber);
+                    break;
+                case "Division":
+                    result= firstNumber + " / " + secondNumber +" = "+ (firstNumber/secondNumber);
+                    break;
+            }
         }
-        return exception;
+        return result;
     }
 }

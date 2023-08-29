@@ -1,4 +1,7 @@
-package com.example.exercise_10_1;
+package com.example.exercise_10_1.controller;
+
+import com.example.exercise_10_1.model.Customer;
+import com.example.exercise_10_1.repository.CustomerList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,11 +23,5 @@ public class CustomerServlet extends HttpServlet {
         request.setAttribute("customerList", customerList);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/display-customer.jsp");
         requestDispatcher.forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
     }
 }

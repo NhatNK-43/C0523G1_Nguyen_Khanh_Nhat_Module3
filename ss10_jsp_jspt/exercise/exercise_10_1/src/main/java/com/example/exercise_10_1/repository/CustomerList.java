@@ -1,4 +1,6 @@
-package com.example.exercise_10_1;
+package com.example.exercise_10_1.repository;
+
+import com.example.exercise_10_1.model.Customer;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

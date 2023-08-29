@@ -1,4 +1,4 @@
-package com.example.exercise_10_1;
+package com.example.exercise_10_1.model;
 
 import java.time.LocalDate;
 
