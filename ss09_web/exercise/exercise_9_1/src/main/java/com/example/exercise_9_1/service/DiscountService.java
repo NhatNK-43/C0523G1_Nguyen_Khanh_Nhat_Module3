@@ -1,4 +1,4 @@
-package com.example.exercise_9_1;
+package com.example.exercise_9_1.service;
 
 public class DiscountService {
     public Double discountAmount(Double price, Double discountPercent) {
