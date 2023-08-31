@@ -10,5 +10,6 @@ public interface IUserRepository {
     void save(User user);
     void update(int idUpdate, User user);
     void delete(int id);
-    List<User> searchList();
+    List<User> showListSort();
+    List<User> searchByCountryList(String countrySearch);
 }

@@ -30,40 +30,30 @@
             width: 16.67%;
             height: 60px;
             padding-left: 10px;
-            /*border-bottom: 1px solid gainsboro;*/
             border-collapse: collapse;
         }
 
-        .form-control{
+        .form-control {
             width: 50%;
         }
-        .collapse{
+
+        .collapse {
             justify-content: flex-end;
         }
     </style>
 </head>
 <body>
 <table>
-<%--    <div class="container-fluid">--%>
-<%--        <div class="navbar-brand">--%>
-<%--            <b>User list</b>--%>
-<%--        </div>--%>
-<%--        <div class="addUser">--%>
-<%--            <form>--%>
-<%--                <input class="form-control border-primary me-2" type="search" placeholder="Search" aria-label="Search">--%>
-<%--                <button class="btn btn-outline-primary me-2" type="submit">Search</button>--%>
-<%--                <a class="btn btn-primary" role="button" href="/user?action=showFormCreate">Add</a>--%>
-<%--            </form>--%>
-<%--        </div>--%>
-<%--    </div>--%>
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand">User list</a>
+            <a class="navbar-brand tw-semibold" href="/user">User list</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success me-2" type="submit">Search</button>
+                <form action="/user?action=searchByCountry" method="post" class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                           name="countrySearch" id="countrySearch" oninput="inputSearch()" value="${countrySearch}">
+                    <button class="btn btn-outline-success me-2" type="submit" id="searchCountry">Search</button>
                 </form>
+                <a class="btn btn-primary me-2" role="button" href="/user?action=showListSort">Sort</a>
                 <a class="btn btn-primary" role="button" href="/user?action=showFormCreate">Add</a>
             </div>
         </div>
@@ -125,6 +115,15 @@
         document.getElementById("nameDelete").textContent = nameDelete;
         document.getElementById("idDelete").value = id;
     }
+
+    <%--function inputSearch() {--%>
+    <%--    document.getElementById("searchCountry").click();--%>
+    <%--}--%>
+
+    <%--window.onload = function () {--%>
+    <%--    document.getElementById("countrySearch").focus();--%>
+    <%--    document.getElementById("countrySearch").value = '${countrySearch}';--%>
+    <%--}--%>
 </script>
 </body>
 </html>

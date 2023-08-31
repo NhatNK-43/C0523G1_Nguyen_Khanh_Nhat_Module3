@@ -1,6 +1,6 @@
 package com.example.exercise_12_1.model;
 
-public class User {
+public class User implements Comparable<User>{
     private int id;
     private String name;
     private String email;
@@ -49,5 +49,10 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return this.name.compareTo(o.name);
     }
 }

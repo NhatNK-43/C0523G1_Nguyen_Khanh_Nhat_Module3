@@ -38,6 +38,8 @@ public class UserServlet extends HttpServlet {
             case "showFormUpdate":
                 showFormUpdate(request,response);
                 break;
+            case "showListSort":
+                showListSort(request,response);
             default:
                 showList(request,response);
         }
@@ -46,6 +48,17 @@ public class UserServlet extends HttpServlet {
     private void showList(HttpServletRequest request, HttpServletResponse response) {
         List<User> userList = userService.showList();
         request.setAttribute("userList",userList);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/user-list.jsp");
+        try {
+            requestDispatcher.forward(request,response);
+        } catch (ServletException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void showListSort(HttpServletRequest request, HttpServletResponse response) {
+        List<User> userListSort = userService.showListSort();
+        request.setAttribute("userList",userListSort);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/user-list.jsp");
         try {
             requestDispatcher.forward(request,response);
@@ -76,6 +89,9 @@ public class UserServlet extends HttpServlet {
                 break;
             case "delete":
                 delete(request,response);
+                break;
+            case "searchByCountry":
+                searchByCountryList(request,response);
                 break;
         }
     }
@@ -135,4 +151,16 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    private void searchByCountryList(HttpServletRequest request, HttpServletResponse response) {
+        String countrySearch = request.getParameter("countrySearch");
+        List<User> searchByCountryList = userService.searchByCountryList(countrySearch);
+        request.setAttribute("userList", searchByCountryList);
+        request.setAttribute("countrySearch",countrySearch);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/user-list.jsp");
+        try {
+            requestDispatcher.forward(request, response);
+        } catch (ServletException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
