@@ -1,20 +1,17 @@
-package com.example.exercise_12_1.repository;
+package com.example.exercise_13_1.repository;
 
-import com.example.exercise_12_1.model.User;
+import com.example.exercise_13_1.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class UserRepository implements IUserRepository {
-    private static final String SELECT = "select id, name, email, country from user_management.users where is_delete = 0;";
-    private static final String INSERT = "insert into users(name,email,country,is_delete) values (?,?,?,b'0');";
-    private static final String UPDATE = "update users set name = ?, email = ?, country = ? where id = ?";
-    private static final String DELETE = "update users set is_delete = b'1' where id = ?";
+    private static final String SELECT = "call show_list()";
+    private static final String INSERT = "call add_user(?,?,?)";
+    private static final String UPDATE = "call update_user(?,?,?,?)";
+    private static final String DELETE = "call delete_user(?)";
     private static final String SEARCH_COUNTRY = "select id, name, email, country from user_management.users \n" +
             "where country like ? and is_delete = 0;";
 
@@ -33,8 +30,8 @@ public class UserRepository implements IUserRepository {
         List<User> userList = new ArrayList<>();
         Connection connection = BaseRepository.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            CallableStatement callableStatement = connection.prepareCall(SELECT);
+            ResultSet resultSet = callableStatement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
@@ -53,11 +50,11 @@ public class UserRepository implements IUserRepository {
     public void save(User user) {
         Connection connection = BaseRepository.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, user.getCountry());
-            preparedStatement.executeUpdate();
+            CallableStatement callableStatement = connection.prepareCall(INSERT);
+            callableStatement.setString(1, user.getName());
+            callableStatement.setString(2, user.getEmail());
+            callableStatement.setString(3, user.getCountry());
+            callableStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -72,24 +69,24 @@ public class UserRepository implements IUserRepository {
     public void update(int idUpdate, User user) {
         Connection connection = BaseRepository.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, user.getCountry());
-            preparedStatement.setInt(4, idUpdate);
-            preparedStatement.executeUpdate();
+            CallableStatement callableStatement = connection.prepareCall(UPDATE);
+            callableStatement.setString(1, user.getName());
+            callableStatement.setString(2, user.getEmail());
+            callableStatement.setString(3, user.getCountry());
+            callableStatement.setInt(4, idUpdate);
+            callableStatement.executeUpdate();
             connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void delete(int id) {
+    public void delete(int idDelete) {
         Connection connection = BaseRepository.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
-            preparedStatement.setInt(1,id);
-            preparedStatement.executeUpdate();
+            CallableStatement callableStatement = connection.prepareCall(DELETE);
+            callableStatement.setInt(1,idDelete);
+            callableStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
