@@ -8,6 +8,12 @@ import java.util.List;
 
 public class UserService implements IUserService{
     private IUserRepository userRepository = new UserRepository();
+
+    @Override
+    public User findById(int id) {
+        return userRepository.findById(id);
+    }
+
     @Override
     public List<User> showList() {
         return userRepository.showList();
@@ -16,5 +22,15 @@ public class UserService implements IUserService{
     @Override
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public void update(int idUpdate, User user) {
+        userRepository.update(idUpdate,user);
+    }
+
+    @Override
+    public void delete(int id) {
+        userRepository.delete(id);
     }
 }

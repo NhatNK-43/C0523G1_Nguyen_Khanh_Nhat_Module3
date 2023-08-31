@@ -13,65 +13,118 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <style>
-        body{
+        body {
             margin: 0 50px;
         }
-        tbody tr:nth-child(odd){
+
+        tbody tr:nth-child(odd) {
             background: gainsboro;
         }
-        table{
+
+        table {
             border: 1px solid gainsboro;
             width: 100%;
         }
-        th, td{
+
+        th, td {
             width: 16.67%;
             height: 60px;
             padding-left: 10px;
             /*border-bottom: 1px solid gainsboro;*/
             border-collapse: collapse;
         }
-        b{
+
+        .form-control{
             width: 50%;
-            display: block;
-            font-size: 20px;
-            padding: 10px;
         }
-        span{
-            width: 50%;
-            display: block;
-            text-align: right;
-            padding: 10px;
+        .collapse{
+            justify-content: flex-end;
         }
     </style>
 </head>
 <body>
-    <table>
-        <div class="d-flex">
-        <b>User list</b><span><a class="btn btn-primary" role="button" href="/user?action=showFormCreate">Add</a></span>
+<table>
+<%--    <div class="container-fluid">--%>
+<%--        <div class="navbar-brand">--%>
+<%--            <b>User list</b>--%>
+<%--        </div>--%>
+<%--        <div class="addUser">--%>
+<%--            <form>--%>
+<%--                <input class="form-control border-primary me-2" type="search" placeholder="Search" aria-label="Search">--%>
+<%--                <button class="btn btn-outline-primary me-2" type="submit">Search</button>--%>
+<%--                <a class="btn btn-primary" role="button" href="/user?action=showFormCreate">Add</a>--%>
+<%--            </form>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand">User list</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success me-2" type="submit">Search</button>
+                </form>
+                <a class="btn btn-primary" role="button" href="/user?action=showFormCreate">Add</a>
+            </div>
         </div>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Country</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="user" items="${userList}" varStatus="id">
-                <tr>
-                    <td><c:out value="${id.count}"/></td>
-                    <td><c:out value="${user.name}"/></td>
-                    <td><c:out value="${user.email}"/></td>
-                    <td><c:out value="${user.country}"/></td>
-                    <td><button type="button" class="btn btn-outline-primary">Edit</button></td>
-                    <td><button type="button" class="btn btn-outline-danger">Delete</button></td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+    </nav>
+    <thead>
+    <tr>
+        <th>Ordinal number</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Country</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="user" items="${userList}" varStatus="ordinalNumber">
+        <tr>
+            <td><c:out value="${ordinalNumber.count}"/></td>
+            <td><c:out value="${user.name}"/></td>
+            <td><c:out value="${user.email}"/></td>
+            <td><c:out value="${user.country}"/></td>
+            <td><a class="btn btn-outline-primary" role="button"
+                   href="/user?action=showFormUpdate&id=${user.id}">Edit</a></td>
+            <td>
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                        data-bs-target="#deleteModal"
+                        onclick="sendInformToModalDelete('${user.id}','${user.name}')">Delete
+                </button>
+            </td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<div id="deleteModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/user?action=delete" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Do you want to delete user <span id="nameDelete" class="text-danger"></span></p>
+                    <input type="hidden" id="idDelete" name="idDelete">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+</script>
+<script>
+    function sendInformToModalDelete(id, nameDelete) {
+        document.getElementById("nameDelete").textContent = nameDelete;
+        document.getElementById("idDelete").value = id;
+    }
+</script>
 </body>
 </html>

@@ -35,6 +35,9 @@ public class UserServlet extends HttpServlet {
             case "showFormCreate":
                 showFormCreate(request,response);
                 break;
+            case "showFormUpdate":
+                showFormUpdate(request,response);
+                break;
             default:
                 showList(request,response);
         }
@@ -68,6 +71,12 @@ public class UserServlet extends HttpServlet {
             case "create":
                 create(request,response);
                 break;
+            case "update":
+                update(request,response);
+                break;
+            case "delete":
+                delete(request,response);
+                break;
         }
     }
 
@@ -85,6 +94,40 @@ public class UserServlet extends HttpServlet {
         String email = request.getParameter("email");
         String country = request.getParameter("country");
         userService.save(new User(name,email,country));
+        try {
+            response.sendRedirect("/user");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void showFormUpdate(HttpServletRequest request, HttpServletResponse response){
+        int idUpdate = Integer.parseInt(request.getParameter("id"));
+        User user = userService.findById(idUpdate);
+        request.setAttribute("user",user);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/update.jsp");
+        try {
+            requestDispatcher.forward(request,response);
+        } catch (ServletException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void update(HttpServletRequest request, HttpServletResponse response){
+        int idUpdate = Integer.parseInt(request.getParameter("idUpdate"));
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String country = request.getParameter("country");
+        userService.update(idUpdate, new User(name,email,country));
+        try {
+            response.sendRedirect("/user");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void delete(HttpServletRequest request, HttpServletResponse response){
+        int idDelete = Integer.parseInt(request.getParameter("idDelete"));
+        userService.delete(idDelete);
         try {
             response.sendRedirect("/user");
         } catch (IOException e) {
